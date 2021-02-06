@@ -50,3 +50,15 @@ Follow the instructions on the Technical Challenge page for submission.
 
 Use any tools you think are relevant to the challenge! To install additional packages
 run `pipenv install <package_name>` within the directory. Make sure to document your additions.
+
+
+## data modeling
+
+Primary key : code
+
+table columns: name, description, tags
+
+## wants me to load json data and write it to sql.
+
+## 1st
+So basically we are initiaiating the db as sqlalchemy and connecting it to a sql uri.
