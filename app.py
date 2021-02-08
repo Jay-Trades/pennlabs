@@ -67,8 +67,8 @@ def get_tag():
                 count[tag.name] += 1
                 
     for k, v in count:
-        result.append({"tag": k, "count":v}
-
+        result.append({"tag": k, "count":v})
+    
     return jsonify(result)
 
 if __name__ == '__main__':

@@ -2,21 +2,51 @@
 
 ## Documentation
 
-Fill out this section as you complete the challenge!
+See File structure to see how db is modeled.
+Implemented a `tag` table to hold all the unique tags and `club` table for all unique clubs
+Implemented a `club_tag` table, many-to-many relationship between `club` and `tag` because each club can have many tags and each tag can map to many clubs.
+Same logic applies to `user_favorites` table it uses a Many-to-many relationship between `User` and `Club`.
 
 ## Installation
 
-1. Click the green "use this template" button to make your own copy of this repository, and clone it. Make sure to create a **private repository**.
-2. Change directory into the cloned repository.
-3. Install `pipenv`
-   - `pip install --user --upgrade pipenv`
-4. Install packages using `pipenv install`.
+1. Install 'pipenv'. - `pip install --user --upgrade pipenv`
+2. Intall packages flask, Flask SQLAlchemy, with `pipenv install`
+3. Run `bootstrap.py` to create database, run `app.py` to start flask server.
 
-## File Structure
+## File Structure / functions
 
-- `app.py`: Main file. Has configuration and setup at the top. Add your [URL routes](https://flask.palletsprojects.com/en/1.1.x/quickstart/#routing) to this file!
-- `models.py`: Model definitions for SQLAlchemy database models. Check out documentation on [declaring models](https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/) as well as the [SQLAlchemy quickstart](https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/#quickstart) for guidance
-- `bootstrap.py`: Code for creating and populating your local database. You will be adding code in this file to load the provided `clubs.json` file into a database.
+- `app.py`: Contains routes
+
+   -/api/user/:username : get user profile
+   -/api/clubs : get all exisiting clubs
+   -/api/clubs?search=<QUERY> : get clubs with <QUERY> in name
+   -/api/clubs : post add new club
+   -/api/:club/favorite : post new favorite club
+   -/api/tag_count : get tags and # of clubs associate with that tag
+
+
+- `models.py`: Model definitions for SQLAlchemy database models. 
+
+   -Club: table with fields (code, name, description)
+      -`tags` is a Club attribute that repersents all tags a specific club maps to in the club_tag helper table
+
+   -Tag: table with fields (name(tag name))
+      -`club` is a Tag attribute that repersents all clubs a specific tag maps to in the club_tag helper table
+
+   -club_tag: helper table with fields(club.id, tag.id)
+      -This table repersents the many-to-many relationship between clubs and tags.
+
+   -User: table with fields (name, user_name)
+
+      -`favorite_clubs` is a User attribute that repersents all clubs a specific user maps to in the user_favorites helper table
+      - Implemented a many-to-many table because each user can have multiple favorite clubs and a Club can have many Users favorites. 
+      - Could add review attribute for future use and implement a reviews table to store user reviews. Which would map to clubs and user in a many to 1 relationship.
+
+   -user_favorites: helper table with fields(club.id, user.id)
+      -This table repersents the many-to-many relationship between clubs and user.
+
+
+- `bootstrap.py`: Code for creating and populating your local database. Will add club.json into a sqlite db.
 
 ## Developing
 
@@ -51,14 +81,3 @@ Follow the instructions on the Technical Challenge page for submission.
 Use any tools you think are relevant to the challenge! To install additional packages
 run `pipenv install <package_name>` within the directory. Make sure to document your additions.
 
-
-## data modeling
-
-Primary key : code
-
-table columns: name, description, tags
-
-## wants me to load json data and write it to sql.
-
-## 1st
-So basically we are initiaiating the db as sqlalchemy and connecting it to a sql uri.

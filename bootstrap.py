@@ -33,18 +33,16 @@ def load_data():
                 # print(tag_to_add.name)
                 db.session.add(tag_to_add)
                 #adds tags that are unique
-
+                
             club.tags.append(tag_to_add)
             #specific instance of club in the tags table (many-to-many) append the tag obj
         db.session.add(club)
         db.session.commit()
 
-    tag = Tag.query.filter_by(name="Graduate").first()
-    print(tag.club[0].name)
-    # club = Club.query.filter_by(code = "pppjo")
-    # print(club)
-    # print(club.id)
-    # print("TODO: Load in clubs.json to the database.")
+    # tag = Tag.query.filter_by(name="Graduate").first()
+    # print(tag.club[0].name)
+    club = Club.query.filter_by(code='pppjo').first()
+    print(club.tags.query.filter_by(name='Athletics').first())
 
 
 # No need to modify the below code.
