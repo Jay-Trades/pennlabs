@@ -18,9 +18,9 @@ Same logic applies to `user_favorites` table it uses a Many-to-many relationship
 - `app.py`: Contains routes
 
    -/api/user/:username : get user profile
-   -/api/clubs : get all exisiting clubs
+   -/api/club : get all exisiting clubs
    -/api/clubs?search=<QUERY> : get clubs with <QUERY> in name
-   -/api/clubs : post add new club
+   -/api/club : post add new club
    -/api/:club/favorite : post new favorite club
    -/api/tag_count : get tags and # of clubs associate with that tag
 

@@ -35,21 +35,6 @@ def load_data():
         db.session.add(club)
         db.session.commit()
 
-    # tag = Tag.query.filter_by(name="Graduate").first()
-    # print(tag.club[0].name)
-    user = User.query.filter_by(user_name = "josh").first()
-    club = Club.query.filter_by(code = 'pppjo').first()
-    p = Club(code = 'code', name = 'name', description= 'description')
-    user.favorite_clubs.append(club)
-    user.favorite_clubs.append(p)
-    db.session.commit()
-
-    # print(club.tags.query.filter_by(name='Athletics').first())
-    # clubs = Club.query.filter(Club.name.like("%Penn%")).all()
-    # for club in clubs:
-    #     print(club.name)
-
-
 # No need to modify the below code.
 if __name__ == '__main__':
     # Delete any existing database before bootstrapping a new one.

@@ -24,57 +24,55 @@ def api():
 @app.route('/api/club', methods=['GET', 'POST'])
 def modify_clubs():
     if request.method == 'GET':
-        clubs = Club.query.all()
+        clubs = Club.query.all()    #returns all clubs objs in a list
         return jsonify([club.serialize() for club in clubs])
         #serialize all clubs in json format then return
     else:
-        data = request.get_json()
+        data = request.get_json()   #this will get the json data and i can assume that each field will have the speciified data
         club = Club(name=data["name"], code=data["code"], description=data["description"])
         db.session.add(club)
         db.session.commit()
-        return 201
-        #this will get the json data and i can assume that each field will have the speciified data
+        return Response(status=201)
 
 @app.route('/api/user/<username>', methods=['GET'])
 def get_profile(username):
-    profile = User.query.filter_by(user_name=username).first()
+    profile = User.query.filter_by(user_name=username).first()  #get user obj by username
     return jsonify(profile.serialize())
 
 
 @app.route('/api/clubs', methods=['GET'])
 def get_club():
     name = request.args.get('search')
-    arg = "%"+name+"%"
-    clubs = Club.query.filter(Club.name.like(arg)).all()
+    arg = "%"+name+"%"                              #syntax for finding strings that include the arg in it
+    clubs = Club.query.filter(Club.name.like(arg)).all()    #filters club names that have the arg in it
     return jsonify([club.serialize() for club in clubs])
 
-@app.route('/api/clubs/:code', methods=['PATCH'])
+@app.route('/api/clubs/:code', methods=['PATCH'])   #not sure if :code was the parameter for querying the club
 def modify():
     data = request.get_json()
-    club = Club.query.filter_by(code=data['code'])
+    club = Club.query.filter_by(code=data['code'])  #find the club with the give code arg
     for k, v in data:
-        if data[k]:
+        if data[k]:                                 #only modify the data if the args are not empty.
             if k == 'name':
                 club.name = v
             elif k == 'description':
                 club.description = v
             elif k == 'code':
                 club.code = v
-
+    db.session.commit()
 
 @app.route('/api/tag_count', methods=['GET'])
 def get_tag():
-    tags = Tag.query.all()
+    tags = Tag.query.all()  #get all tags
     count = {}
     result = []
-    for tag in tags:
-        if tag.name not in count:
-            count[tag.name] = 0
-            for club in tag.club:
-                count[tag.name] += 1
+    for tag in tags:    #iterate through all tags and create dictionary with tag.name as key
+        count[tag.name] = 0
+        for club in tag.club:   #increment count for every club in tag.club (all clubs associated with that tag)
+            count[tag.name] += 1
                 
     for k, v in count:
-        result.append({"tag": k, "count":v})
+        result.append({"tag": k, "count": v}) #seralize the result 
 
     return jsonify(result)
 
@@ -83,11 +81,14 @@ def favorite():
     data = request.get_json()
     club_name = data['club']
     user_name = data['user']
-    user = User.query.filter_by(user_name=user_name).first()
-    exist = user.favorites.query.filter_by(club=club_name).first()
-    if not exist:
+    user = User.query.filter_by(user_name=user_name).first()    #finds the user by user_name
+    exist = user.favorites.query.filter_by(club=club_name).first()  #trys to find the club in users favorite clubs (user.favorites)
+    if not exist:                                                   #if exist is none we add the club to user.favorites
         club = Club.query.filter_by(name=club_name).first()
         user.favorites.append(club)
+        db.session.commit()
+        return Response(status=201)
+
     else:
         return "You already favorited that club!"
 

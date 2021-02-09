@@ -18,7 +18,8 @@ class Club(db.Model):
     description = db.Column(db.String(300), unique=False, nullable=True)
 
     tags = db.relationship("Tag", secondary="club_tag", backref="club")
-
+    #backref relationship between club and tag. 
+    #can access all tags associated with a club through "club.tags"
 
     def __init__(self, code, name, description):
         self.code = code
@@ -51,8 +52,9 @@ class User(db.Model):
     user_name = db.Column(db.String(30), unique=False, nullable=False)
 
     favorite_clubs = db.relationship("Club", secondary="user_favorites", backref="user")
+    #backref relationship between user and club. 
+    #can access all favorited clubs associated with a user through "user.favoriteclubs"
 
-    #many-to many relationship between user and club
 
     def __repr__(self):
         return f"User('{self.user_name}', '{self.name}')"
