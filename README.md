@@ -3,7 +3,7 @@
 ## Documentation
 
 See File structure to see how db is modeled.
-Implemented a `tag` table to hold all the unique tags and `club` table for all unique clubs
+Implemented a `tag` table holds all the unique tags and `club` table for all unique clubs
 Implemented a `club_tag` table, many-to-many relationship between `club` and `tag` because each club can have many tags and each tag can map to many clubs.
 Same logic applies to `user_favorites` table it uses a Many-to-many relationship between `User` and `Club`.
 
