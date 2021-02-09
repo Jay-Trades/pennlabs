@@ -1,6 +1,7 @@
 # Penn Labs Backend Challenge
 
 ## Documentation
+First time using Flask/Alchemy/APIs so bare with me!
 
 See File structure to see how db is modeled.
 Implemented a `tag` table holds all the unique tags and `club` table for all unique clubs
